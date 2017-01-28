@@ -39,7 +39,7 @@ def alex_net(_X, _dropout, n_classes, imagesize, img_channel):
         'bd2': tf.Variable(tf.random_normal([4096])),
         'out': tf.Variable(tf.random_normal([n_classes]))
     }
-    # Reshape input picture OH WAIT NOPE CUS JE SUIS UN TENSAI DESU
+    # Reshape input picture
     _X = tf.reshape(_X, shape=[-1, imagesize, imagesize, img_channel])
 
     # Convolution Layer
