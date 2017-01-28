@@ -16,6 +16,7 @@ class Dataset:
     #check if batch limit reached i.e need for shuffle
     if not (self.total_data - self.data_count) > batch_size:
       self.data_count = 0
+      print "Count limit reached. 'self.data_count' is reset."
       return True
     else:
       return False
@@ -64,8 +65,11 @@ class Dataset:
     if self.isBatchEnd(batch_size):
       package = zip(self.x_train, self.y_train, self.y_hot)
       np.random.shuffle(package)
-      self.x_train ,self.y_train, self.y_hot = zip(*package)  
-      del package
+      x_i ,y_i, yh_i = zip(*package)  
+      self.x_train = np.concatenate(x_i, axis=0).reshape((50000,32,32,3))
+      self.y_train = np.array(y_i)
+      self.y_hot = np.concatenate(yh_i,axis=0).reshape((50000,10))
+      del x_i,y_i,yh_i,package
     x_batch = self.x_train[self.data_count:self.data_count+batch_size]
     y_batch = self.y_train[self.data_count:self.data_count+batch_size]
     y_hot = self.y_hot[self.data_count:self.data_count+batch_size]
@@ -76,10 +80,21 @@ class Dataset:
 if __name__ == "__main__":
   path_to_cifar = '/home/aashish/Documents/cifar-10-batches-py'
   data = Dataset(path_to_cifar)
-  x,y,yh = data.getNextBatch(64)
+  #for x_do in range (1, 10):
+    #x,y,yh = data.getNextBatch(10000)
+    #print yh
+  x,y,yh = data.getNextBatch(10000)
+  print y
   print yh
-  print yh.shape
 
+  x,y,yh = data.getNextBatch(40000)
+  print y
+  print yh
+
+  '''x,y,yh = data.getNextBatch(10000)
+  print yh
+  print len(yh)
+  x,y,yh = data.getNextBatch(40000)'''
     
 
 
