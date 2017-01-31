@@ -5,6 +5,7 @@
 import pickle_load
 import model_alexNet
 import tensorflow as tf
+import img_proc
 
 data = pickle_load.Dataset('/home/aashish/Documents/cifar-10-batches-py')
 
@@ -20,6 +21,7 @@ imagesize = 32
 img_channel = 3
 inference = model_alexNet.modelAlexNet()
 x = tf.placeholder(tf.float32, [None, imagesize, imagesize, img_channel])
+distorted_images = img_proc.pre_process(images=x, training=True)
 y = tf.placeholder(tf.float32, [None, n_classes])
 keep_prob = tf.placeholder(tf.float32) # dropout (keep probability)
 

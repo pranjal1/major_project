@@ -26,7 +26,7 @@ class Dataset:
     with open(filename, 'rb') as f:
       datadict = pickle.load(f)
       if not meta:
-        X = datadict['data']
+        X = datadict['data']/ 255.0
         Y = datadict['labels']
         X = X.reshape(10000, 3, 32, 32).transpose(0,2,3,1).astype("float") #reshaping the image matrix changing the axes 
         Y = np.array(Y)
@@ -48,8 +48,10 @@ class Dataset:
     Ytr = np.concatenate(ys) #loads training labels
     del xs , ys
     meta_batches = self.load_CIFAR_batch(os.path.join(ROOT, 'batches.meta'), meta = True)
-    labels = meta_batches['label_names']
-    del meta_batches
+    labels = meta_batches[ b'label_names']
+    names = [x.decode('utf-8') for x in labels]
+    labels = names
+    del meta_batches, names
     Xte, Yte = self.load_CIFAR_batch(os.path.join(ROOT, 'test_batch')) #loads test images and test labels
     Y = self.one_hot(Ytr)
     return Xtr, Ytr, Y, Xte, Yte, labels
@@ -84,12 +86,13 @@ if __name__ == "__main__":
     #x,y,yh = data.getNextBatch(10000)
     #print yh
   x,y,yh = data.getNextBatch(10000)
+  print x
   print y
   print yh
 
-  x,y,yh = data.getNextBatch(40000)
-  print y
-  print yh
+ # x,y,yh = data.getNextBatch(40000)
+ # print y
+ # print yh
 
   '''x,y,yh = data.getNextBatch(10000)
   print yh

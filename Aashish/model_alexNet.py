@@ -32,20 +32,15 @@ class modelAlexNet:
             'wc1': tf.Variable(tf.random_normal([5, 5, img_channel, 64])),
             'wc2': tf.Variable(tf.random_normal([5, 5, 64, 64])),
             ,
-            'wd1': tf.Variable(tf.random_normal([6*6*64, 4096])),
-            'wd2': tf.Variable(tf.random_normal([4096, 4096])),
-            'out': tf.Variable(tf.random_normal([4096, n_classes]))
+            'wd1': tf.Variable(tf.random_normal([6*6*64, 128])),
+            'wd2': tf.Variable(tf.random_normal([128, 10]))
         }
         
         self._biases = {
             'bc1': tf.Variable(tf.random_normal([64])),
             'bc2': tf.Variable(tf.random_normal([64])),
-            'bc3': tf.Variable(tf.random_normal([384])),
-            'bc4': tf.Variable(tf.random_normal([256])),
-            'bc5': tf.Variable(tf.random_normal([256])),
-            'bd1': tf.Variable(tf.random_normal([4096])),
-            'bd2': tf.Variable(tf.random_normal([4096])),
-            'out': tf.Variable(tf.random_normal([n_classes]))
+            'bc3': tf.Variable(tf.random_normal([128])),
+            'bc4': tf.Variable(tf.random_normal([10])),
         }
         # Reshape input picture
         self._X = tf.reshape(_X, shape=[-1, imagesize, imagesize, img_channel])
