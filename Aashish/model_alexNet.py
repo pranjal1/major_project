@@ -13,7 +13,7 @@ class modelAlexNet:
         return self.prediction
 
     def conv1st(self,name, l_input, w, b):
-        cov = tf.nn.conv2d(l_input, w, strides=[1, 4, 4, 1], padding='SAME')
+        cov = tf.nn.conv2d(l_input, w, strides=[1, 1, 1, 1], padding='SAME')
         return tf.nn.relu(tf.nn.bias_add(cov,b), name=name)
         
     def conv2d(self,name, l_input, w, b):
@@ -31,22 +31,25 @@ class modelAlexNet:
         self._weights = {
             'wc1': tf.Variable(tf.random_normal([5, 5, img_channel, 64])),
             'wc2': tf.Variable(tf.random_normal([5, 5, 64, 64])),
-            ,
-            'wd1': tf.Variable(tf.random_normal([6*6*64, 128])),
-            'wd2': tf.Variable(tf.random_normal([128, 10]))
+            'wd1': tf.Variable(tf.random_normal([6*6*64, 256])),
+            'wd2': tf.Variable(tf.random_normal([256, 128])),
+            'wd3': tf.Variable(tf.random_normal([128, 10])),
+            'out': tf.Variable(tf.random_normal([10, n_classes]))
         }
         
         self._biases = {
             'bc1': tf.Variable(tf.random_normal([64])),
             'bc2': tf.Variable(tf.random_normal([64])),
-            'bc3': tf.Variable(tf.random_normal([128])),
-            'bc4': tf.Variable(tf.random_normal([10])),
+            'bd1': tf.Variable(tf.random_normal([256])),
+            'bd2': tf.Variable(tf.random_normal([128])),
+            'bd3': tf.Variable(tf.random_normal([10])),
+            'out': tf.Variable(tf.random_normal([n_classes]))
         }
         # Reshape input picture
-        self._X = tf.reshape(_X, shape=[-1, imagesize, imagesize, img_channel])
+        _X = tf.reshape(_X, shape=[-1, imagesize, imagesize, img_channel])
 
         # Convolution Layer
-        self.conv1 = self.conv1st('conv1', self._X, self._weights['wc1'], self._biases['bc1'])
+        self.conv1 = self.conv1st('conv1', _X, self._weights['wc1'], self._biases['bc1'])
 
         # Max Pooling (down-sampling)
         self.pool1 = self.max_pool('pool1', self.conv1, k=2, s=2)
@@ -64,7 +67,7 @@ class modelAlexNet:
         # Apply Dropout
         self.norm2 = tf.nn.dropout(self.norm2, _dropout)
 
-        # Convolution Layer
+        '''# Convolution Layer
         self.conv3 = self.conv2d('conv3', self.norm2, self._weights['wc3'], self._biases['bc3'])
         self.conv4 = self.conv2d('conv4', self.conv3, self._weights['wc4'], self._biases['bc4'])
         self.conv5 = self.conv2d('conv5', self.conv4, self._weights['wc5'], self._biases['bc5'])
@@ -73,14 +76,21 @@ class modelAlexNet:
         # Apply Normalization
         self.norm3 = self.norm('norm3', self.pool3, lsize=4)
         # Apply Dropout
-        self.norm3 = tf.nn.dropout(self.norm3, _dropout)
+        self.norm3 = tf.nn.dropout(self.norm3, _dropout)'''
         
         # Fully connected layer
-        self.dense1 = tf.reshape(self.norm2, [-1, self._weights['wd1'].get_shape().as_list()[0]]) # Reshape conv3 output to fit dense layer input
+        layer_shape = self.norm2.get_shape()
+        print layer_shape
+        num_features = layer_shape[1:4].num_elements()
+        print num_features
+        self.dense1 = tf.reshape(self.norm2, [-1, num_features])
+        print self.dense1.get_shape()
         self.dense1 = tf.nn.relu(tf.matmul(self.dense1, self._weights['wd1']) + self._biases['bd1'], name='fc1') # Relu activation
 
         self.dense2 = tf.nn.relu(tf.matmul(self.dense1, self._weights['wd2']) + self._biases['bd2'], name='fc2') # Relu activation
 
+        self.dense3 = tf.nn.relu(tf.matmul(self.dense2, self._weights['wd3']) + self._biases['bd3'], name='fc3') # Relu activation
+
         # Output, class prediction
-        self.out = tf.matmul(self.dense2, self._weights['out']) + self._biases['out']
+        self.out = tf.matmul(self.dense3, self._weights['out']) + self._biases['out']
         return self.out

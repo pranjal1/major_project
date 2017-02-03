@@ -7,7 +7,7 @@ def pre_process_image(image, training):
     if training:
         # For training, add the following to the TensorFlow graph.
         # Randomly crop the input image.
-        image = tf.random_crop(image, size=[img_size_cropped, img_size_cropped, num_channels])
+        image = tf.random_crop(image, size=[24, 24, 3])
         # Randomly flip the image horizontally.
         image = tf.image.random_flip_left_right(image)        
         # Randomly adjust hue, contrast and saturation.
@@ -27,13 +27,14 @@ def pre_process_image(image, training):
         # Crop the input image around the centre so it is the same
         # size as images that are randomly cropped during training.
         image = tf.image.resize_image_with_crop_or_pad(image,
-                                                       target_height=img_size_cropped,
-                                                       target_width=img_size_cropped)
+                                                       target_height=24,
+                                                       target_width=24)
     return image
 
-def pre_process(images, training):
+def pre_process(images, training=True):
     # Use TensorFlow to loop over all the input images and call
     # the function above which takes a single image as input.
     images = tf.map_fn(lambda image: pre_process_image(image, training), images)
+    #images = images.eval()
 
     return images

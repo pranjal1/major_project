@@ -15,20 +15,21 @@ decay_rate = 0.1
 batch_size = 64
 display_step = 20
 
-n_classes = data.total_data # we got mad kanji
+#n_classes = data.total_data # we got mad kanji
+n_classes = 10
 dropout = 0.8 # Dropout, probability to keep units
-imagesize = 32
+imagesize = 24
 img_channel = 3
 inference = model_alexNet.modelAlexNet()
 x = tf.placeholder(tf.float32, [None, imagesize, imagesize, img_channel])
-distorted_images = img_proc.pre_process(images=x, training=True)
+#distorted_images = img_proc.pre_process(images=x, training=True)
 y = tf.placeholder(tf.float32, [None, n_classes])
 keep_prob = tf.placeholder(tf.float32) # dropout (keep probability)
 
 pred = inference.model_predict(x, keep_prob, n_classes, imagesize, img_channel)
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
 
-global_step = tf.Variable(0, trainable=False)
+global_step = tf.Variable(initial_value=0,name = 'global_step', trainable=False)
 lr = tf.train.exponential_decay(learn_rate, global_step, 1000, decay_rate, staircase=True)
 optimizer = tf.train.AdamOptimizer(learning_rate=lr).minimize(cost, global_step=global_step)
 
@@ -49,11 +50,11 @@ with tf.Session() as sess:
     step = 1
     while step < 3000:
         batch_xs, batch_ys, batch_yhot = data.getNextBatch(batch_size)
-
+        batch_xs = img_proc.pre_process(batch_xs).eval()
         sess.run(optimizer, feed_dict={x: batch_xs, y: batch_yhot, keep_prob: dropout})
         if step % display_step == 0:
-            acc = sess.run(accuracy, feed_dict={x: batch_xs, y: batch_ys, keep_prob: 1.})
-            loss = sess.run(cost, feed_dict={x: batch_xs, y: batch_ys, keep_prob: 1.})
+            acc = sess.run(accuracy, feed_dict={x: batch_xs, y: batch_yhot, keep_prob: 1.})
+            loss = sess.run(cost, feed_dict={x: batch_xs, y: batch_yhot, keep_prob: 1.})
             rate = sess.run(lr)
             print "lr " + str(rate) + " Iter " + str(step) + ", Minibatch Loss= " + "{:.6f}".format(loss) + ", Training Accuracy= " + "{:.5f}".format(acc)
 
