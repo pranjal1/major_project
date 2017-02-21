@@ -80,11 +80,11 @@ class modelAlexNet:
         
         # Fully connected layer
         layer_shape = self.norm2.get_shape()
-        print layer_shape
+        #print layer_shape
         num_features = layer_shape[1:4].num_elements()
-        print num_features
+        #print num_features
         self.dense1 = tf.reshape(self.norm2, [-1, num_features])
-        print self.dense1.get_shape()
+        #print self.dense1.get_shape()
         self.dense1 = tf.nn.relu(tf.matmul(self.dense1, self._weights['wd1']) + self._biases['bd1'], name='fc1') # Relu activation
 
         self.dense2 = tf.nn.relu(tf.matmul(self.dense1, self._weights['wd2']) + self._biases['bd2'], name='fc2') # Relu activation

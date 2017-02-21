@@ -29,8 +29,8 @@ class Dataset:
     with open(filename, 'rb') as f:
       datadict = pickle.load(f)
       if not meta:
-        #X = datadict['data']/ 255.0
-        X = datadict['data']
+        X = datadict['data']/ 255.0
+        #X = datadict['data']
         Y = datadict['labels']
         X = X.reshape(10000, 3, 32, 32).transpose(0,2,3,1).astype("float") #reshaping the image matrix changing the axes 
         Y = np.array(Y)
@@ -72,7 +72,11 @@ class Dataset:
     return Y   
 
   def getNextBatch(self, batch_size):
-    if self.isBatchEnd(batch_size):
+    idx = np.random.choice(len(self.x_train),size=batch_size,replace=False)
+    x_batch = self.x_train[idx, :, :, :]
+    y_batch = self.y_train[idx,]
+    y_hot = self.y_hot[idx, :]
+    '''if self.isBatchEnd(batch_size):
       package = zip(self.x_train, self.y_train, self.y_hot)
       np.random.shuffle(package)
       x_i ,y_i, yh_i = zip(*package)  
@@ -81,20 +85,22 @@ class Dataset:
       self.y_train = np.array(y_i)
       #self.y_hot = np.concatenate(yh_i,axis=0).reshape((50000,10))
       self.y_hot = np.concatenate(yh_i,axis=0).reshape((50000,10))
-      del x_i,y_i,yh_i,package
-    print self.x_train.shape
-    print self.y_train.shape
-    print self.y_hot.shape
-    x_batch = self.x_train[self.data_count:self.data_count+batch_size]
-    print x_batch.shape
-    y_batch = self.y_train[self.data_count:self.data_count+batch_size]
-    y_hot = self.y_hot[self.data_count:self.data_count+batch_size]
+      del x_i,y_i,yh_i,package'''
+    #print self.x_train.shape
+    #print self.y_train.shape
+    #print self.y_hot.shape
 
-    print y_batch.shape
-    print y_hot.shape
+
+    #x_batch = self.x_train[self.data_count:self.data_count+batch_size]
+    #print x_batch.shape
+    #y_batch = self.y_train[self.data_count:self.data_count+batch_size]
+    #y_hot = self.y_hot[self.data_count:self.data_count+batch_size]
+
+    #print y_batch.shape
+    #print y_hot.shape
     self.data_count += batch_size
     return x_batch, y_batch, y_hot
-'''if __name__ == "__main__":
+'''if __name__ == "__main
   path_to_cifar = '/home/aashish/Documents/cifar-10-batches-py'
   data = Dataset(path_to_cifar)
   #for x_do in range (1, 10):
