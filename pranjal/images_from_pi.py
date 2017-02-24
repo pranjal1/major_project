@@ -28,7 +28,7 @@ while frameCount < FRAMES:
 
 
 #transferring captured images from raspberry pi to server(my pc in this case)
-number_of_images = 5
+number_of_images = FRAMES
 num_count =0
 WAIT_FOR_SCP_TRANSMIT = 6
 while num_count < number_of_images:
