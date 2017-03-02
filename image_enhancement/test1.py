@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-img = cv2.imread('kafle.jpg',0)
+img = cv2.imread('image1.jpg',0)
 equ = cv2.equalizeHist(img) #tried to see if histogram equalizing improved edge detecting efficiency and results are good. 
 
 '''
