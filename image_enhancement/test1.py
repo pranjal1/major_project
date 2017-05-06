@@ -4,7 +4,8 @@ from matplotlib import pyplot as plt
 
 img = cv2.imread('image1.jpg',0)
 equ = cv2.equalizeHist(img) #tried to see if histogram equalizing improved edge detecting efficiency and results are good. 
-
+cv2.imwrite('img2.jpg',equ)
+cv2.imwrite('img1.jpg',img)
 '''
 #histogram visualizing
 

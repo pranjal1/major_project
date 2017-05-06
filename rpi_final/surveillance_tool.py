@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from operation import image_capture,image_transmit
+#from operation import image_capture,image_transmit
 import sys
 import os
 import time
@@ -60,16 +60,25 @@ class raspberry_viewer:
 		sys.exit(0)
 
 	def start_clicked(self,widget):
-                self.text_setting(self)
-                image_capture()
-		image_transmit()
+		try:
+			while 1:
+				if (widget == self.glade.get_object("button1")):
+					print "hmm"					
+				else:
+					print "haha"
+					break	
+		except KeyboardInterrupt:
+			print "ctrl+c is pressed" 	
+			
+                	
 
 	def text_setting(self,widget):
 		self.glade.get_object("label2").set_text("Image capture and transmission")
 
 
 	def stop_clicked(self,widget):
-		print "abc" #need to add later
+		print "abc" 
+		print widget
 
 	def help_clicked(self,widget):
 		open_help = loading_help_page()
