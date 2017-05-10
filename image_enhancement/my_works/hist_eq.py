@@ -13,7 +13,6 @@ except Exception as err:
 	print "format:"
 	print "python hist_eq.py source dest1 dest2\n"	
 
-
 def equalize_hist(img):
     for c in xrange(0, 3):
        img[:,:,c] = cv2.equalizeHist(img[:,:,c]) #histogram equalization for RGB channels separately
