@@ -3,11 +3,12 @@ import numpy as np
 from matplotlib import pyplot as plt
 import math
 
-img = cv2.imread('net1.jpg')
+img = cv2.imread('abc.jpg')
 img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-equ = cv2.equalizeHist(img)
-cv2.imwrite('img2.jpg',equ)
-cv2.imwrite('img1.jpg',img)
+#equ = cv2.equalizeHist(img)
+equ= cv2.imread('avs.jpg')
+#cv2.imwrite('img2.jpg',equ)
+#cv2.imwrite('img1.jpg',img)
 
 try:
 	data1 = np.asarray( img, dtype='uint8' )
