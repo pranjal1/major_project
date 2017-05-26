@@ -81,7 +81,7 @@ try:
 	numerator = prob_cdf(nor_hist)
 	#transform image
 	final_img = ahs_transorm_image(img,numerator,nor_hist,beta_val)
-	cv2.imwrite("abc.jpg",final_img)
+	cv2.imwrite("ahe_dark.jpg",final_img)
 	
 except Exception as error:
 	print error

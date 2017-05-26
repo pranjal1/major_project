@@ -26,17 +26,15 @@ for fname in images:
      # If found, add object points, image points (after refining them)
      if ret == True:
          objpoints.append(objp)
-
          cv2.cornerSubPix(gray,corners,(11,11),(-1,-1),criteria)
          imgpoints.append(corners)
-
          # Draw and display the corners
          cv2.drawChessboardCorners(img, (9,6), corners,ret)
          cv2.imshow('img',img)
          cv2.waitKey(200)
 
-
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
+
 
 
 print "saving parameters in file....\n"
@@ -52,6 +50,20 @@ file_obj.write("principle points used as image centers cx and cy are:\n")
 file_obj.write(str(mtx[0,2]))
 file_obj.write("\n") 
 file_obj.write(str(mtx[1,2]))
+
+file_obj.write("\n\n")
+file_obj.write("distortion parameters (k1, k2, p1, p2, k3) are:\n")
+file_obj.write("(")
+file_obj.write(str(dist[0,0]))
+file_obj.write(", ") 
+file_obj.write(str(dist[0,1]))
+file_obj.write(", ")
+file_obj.write(str(dist[0,2]))
+file_obj.write(", ") 
+file_obj.write(str(dist[0,3]))
+file_obj.write(", ") 
+file_obj.write(str(dist[0,4]))
+file_obj.write(")")
 file_obj.close()
 
 file_obj = open('./calibration_params/dist.txt', 'w')

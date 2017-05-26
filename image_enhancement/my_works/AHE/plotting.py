@@ -1,10 +1,10 @@
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
-img = cv2.imread('watch.jpg')
-img1 = cv2.imread('ace_watch.jpg')
-img2 = cv2.imread('abc.jpg')
-img3 = cv2.imread('hist_watch.jpg')
+img = cv2.imread('rose.jpg')
+img1 = cv2.imread('clahe_rose.jpg')
+img2 = cv2.imread('hist_rose.jpg')
+img3 = cv2.imread('watch.jpg')
 img4 = cv2.imread('clahe_watch.jpg')
 
 color = ('b','g','r')
