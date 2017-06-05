@@ -14,7 +14,7 @@ objp[:,:2] = np.mgrid[0:9,0:6].T.reshape(-1,2)
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
-images = glob.glob('./images/*.jpg')
+images = glob.glob('./calibration_images/*.jpg')
 
 for fname in images:
      img = cv2.imread(fname)
@@ -33,6 +33,12 @@ for fname in images:
          cv2.imshow('img',img)
          cv2.waitKey(200)
 
+print type(imgpoints)
+print len(imgpoints)
+print type(objpoints)
+print len(objpoints)
+print imgpoints
+print objpoints
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#from operation import image_capture,image_transmit
+from operation import image_capture,image_transmit,cam_init,final_works
 import sys
 import os
 import time
@@ -60,25 +60,25 @@ class raspberry_viewer:
 		sys.exit(0)
 
 	def start_clicked(self,widget):
-		try:
-			while 1:
-				if (widget == self.glade.get_object("button1")):
-					print "hmm"					
-				else:
-					print "haha"
-					break	
-		except KeyboardInterrupt:
-			print "ctrl+c is pressed" 	
-			
-                	
+                self.text_setting(self)
+                try:
+                        number_of_images = 200
+                        counter = 0
+                        cam_init()
+                        while counter < number_of_images:
+                                image_capture()
+                                image_transmit()
+                                counter += 5
+                        final_works()
+                except KeyboardInterrupt:
+                        final_works()   
 
 	def text_setting(self,widget):
 		self.glade.get_object("label2").set_text("Image capture and transmission")
 
 
 	def stop_clicked(self,widget):
-		print "abc" 
-		print widget
+		print "abc" #need to add later
 
 	def help_clicked(self,widget):
 		open_help = loading_help_page()

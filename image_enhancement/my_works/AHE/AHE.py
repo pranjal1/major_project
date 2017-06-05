@@ -81,7 +81,8 @@ try:
 	numerator = prob_cdf(nor_hist)
 	#transform image
 	final_img = ahs_transorm_image(img,numerator,nor_hist,beta_val)
-	cv2.imwrite("ahe_dark.jpg",final_img)
+	gray = np.dot(final_img[...,:3], [0.299, 0.587, 0.114])
+	cv2.imwrite("ahe_cut.jpg",gray)
 	
 except Exception as error:
 	print error

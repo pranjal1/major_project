@@ -17,5 +17,8 @@ def ahs_transorm_image(img,numerator,nor_hist,beta_val):
 	for c in xrange(0, 3):
 		temp = img[:,:,c]
 		for (x,y), value in np.ndenumerate(temp):
-			tx_img[x,y,c] = int((255*numerator[c,temp[x,y]]) / (numerator[c,temp[x,y]] + beta_val[c] * (1-numerator[c,temp[x,y]]-nor_hist[c,temp[x,y]])))	
+			try:
+				tx_img[x,y,c] = int((255*numerator[c,temp[x,y]]) / (numerator[c,temp[x,y]] + beta_val[c] * (1-numerator[c,temp[x,y]]-nor_hist[c,temp[x,y]])))	
+			except:
+				tx_img[x,y,c] = 0
 	return tx_img

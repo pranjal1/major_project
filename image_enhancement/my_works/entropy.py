@@ -37,7 +37,7 @@ def calc_entropy(nor):
 		temp = nor[c,:]
 		for x, value in np.ndenumerate(temp):
 			if (temp[x]>0): #removing zero so that log is not infinity
-				entr += temp[x] * math.log(temp[x],2) #shannon formula
+				entr += temp[x] * math.log(temp[x],10) #shannon formula
 		entr_rgb[c] = -entr
 	return entr_rgb
 	

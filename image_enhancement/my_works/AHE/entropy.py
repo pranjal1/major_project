@@ -44,6 +44,7 @@ def calc_entropy(nor):
 	
 try:
 	img = cv2.imread(first_arg)#select image 
+	img[:,:,1] =0
 	#to check if code is working make img[:,:,0] = const and see the change
 	norm = normalized_histogram(img) 
 	entropy = calc_entropy(norm)

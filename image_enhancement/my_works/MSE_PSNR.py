@@ -2,14 +2,26 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import math
-
-img = cv2.imread('avs.jpg',0)
-equ= cv2.imread('ace.jpg',0)
+import sys
 
 
 try:
-	data1 = np.asarray( img, dtype='uint8' )
-	data2 = np.asarray( equ, dtype='uint8' )
+	first_arg = sys.argv[1]
+	second_arg = sys.argv[2]
+
+
+except Exception as err:
+	print "arguments not sufficient"
+	
+
+img1 = cv2.imread(first_arg,0)
+img2 = cv2.imread(second_arg,0)
+
+
+
+try:
+	data1 = np.asarray( img1, dtype='uint8' )
+	data2 = np.asarray( img2, dtype='uint8' )
 except SystemError:
 	data1 = np.asarray( img.getdata(), dtype='uint8' )
 	data2 = np.asarray( equ.getdata(), dtype='uint8' )
@@ -41,13 +53,17 @@ while (row_count != 0):
 
 mse = sum_sq/(height*width)
 			
-print "MSE = ",mse
+print "MSE between the original and new image = ",mse
 
 try:
 	psnr = 20 * math.log10(255) - 10 * math.log10(mse)
-	print "PSNR = ",psnr
+	print "PSNR between original and new image is = ",psnr
+	psnr_old = 20 * math.log10(255) - 10 * math.log10(np.var(data1))
+	psnr_new = 20 * math.log10(255) - 10 * math.log10(np.var(data2))
+	print "PSNR of old image alone is ",psnr_old
+	print "PSNR of new image alone is ",psnr_new
 except ValueError:
-	print "psnr is infinite"
+	print "psnr between original and new image is infinite"
 
 
 
