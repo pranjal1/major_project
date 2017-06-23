@@ -36,7 +36,7 @@ if img is None:
 filters = build_filters()
  
 res1 = process(img, filters)
-cv2.imwrite('result_hist.jpg',res1)
+cv2.imwrite('result1_gabor.jpg',res1)
 cv2.imshow('result', res1)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

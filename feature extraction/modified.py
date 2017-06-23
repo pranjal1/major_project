@@ -15,12 +15,9 @@ def build_filters():
  
 def process(img, filters):
  	accum = np.zeros_like(img)
- 	i = 0
  	for kern in filters:
  		fimg = cv2.filter2D(img, cv2.CV_8UC3, kern)
-		print i
  		np.maximum(accum, fimg, accum)
- 		i+=1
  	return accum
  
 
@@ -39,10 +36,16 @@ if img is None:
  
 filters = build_filters()
 res1 = process(img, filters)
-res2 = -res1+img
+res2 = np.maximum(img,res1)
 cv2.imshow('result', res1)
 cv2.waitKey(0)
 cv2.imshow(img_dest, res2)
 cv2.waitKey(0)
 cv2.imwrite(img_dest,res2)
+
+#img = cv2.cvtColor(img_fn,cv2.COLOR_BGR2GRAY)
+
+#dsto = cv2.fastNlMeansDenoisingColored(img,None,10,10,7,21)
+cv2.imshow("opencv method", dsto)
+cv2.waitKey(0)
 cv2.destroyAllWindows()
