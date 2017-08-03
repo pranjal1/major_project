@@ -1,3 +1,9 @@
+"""
+EPOCHS ADDED......can use tensorflow coordinator to run queue
+
+"""
+
+
 import tensorflow as tf
 import numpy as np
 import os
@@ -543,3 +549,8 @@ def main(argv=None):
 
 if __name__ == '__main__':
     tf.app.run()
+
+
+#***Author: githubForAashish (Aashish Bhandari)***
+
+
